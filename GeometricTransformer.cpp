@@ -110,8 +110,16 @@ int GeometricTransformer::RotateKeepImage(const Mat& srcImage, Mat& dstImage, fl
 	if (srcImage.data == NULL)
 		return 0;
 	int srcWidth = srcImage.cols, srcHeight = srcImage.rows;
-	float cosx = cos(angle * 3.1415926 / 180.0);
-	float sinx = sin(angle * 3.1415926 / 180.0);
+	float _angle;
+	if (angle < 0) _angle = -angle;
+	else _angle = angle;
+
+	if (_angle > 90) {
+		float tail = _angle - int(_angle);
+		_angle = int(_angle) % 90 + tail;
+	}
+	float cosx = cos(_angle * 3.1415926 / 180.0);
+	float sinx = sin(_angle * 3.1415926 / 180.0);
 	// Tìm kích thước và tạo cửa số ảnh mới
 	int dstWidth = (int)(srcWidth * cosx + srcHeight * sinx);
 	int dstHeight = (int)(srcWidth * sinx + srcHeight * cosx);
